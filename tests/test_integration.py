@@ -1,13 +1,13 @@
 import time
 import unittest
 import threading
-from autonomous_agent import create_concrete_agent
+from main import create_agent
 
 class TestAgentIntegration(unittest.TestCase):
     def test_agent_communication(self):
         # Create agents
-        agent1 = create_concrete_agent("Agent1")
-        agent2 = create_concrete_agent("Agent2")
+        agent1 = create_agent("Agent1")
+        agent2 = create_agent("Agent2")
 
         def run_agents():
             # Agent1 sends a hello message

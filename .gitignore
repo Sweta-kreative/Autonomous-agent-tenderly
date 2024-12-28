@@ -1,6 +1,10 @@
-.env
+# Ignore Python cache files
 __pycache__/
-*.pyc
-venv/
 src/__pycache__/
 tests/__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environments
+venv/
+.env

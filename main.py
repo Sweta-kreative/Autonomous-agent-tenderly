@@ -4,6 +4,7 @@ import time
 from src.blockchain_utils import BlockchainUtils
 from src.agent import AutonomousAgent
 from dotenv import load_dotenv
+from datetime import datetime
 import os
 
 load_dotenv()
@@ -14,7 +15,7 @@ PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 SOURCE_ADDRESS = os.getenv("SOURCE_ADDRESS")
 TARGET_ADDRESS = os.getenv("TARGET_ADDRESS")
 CONTRACT_ADDRESS = os.getenv("CONTRACT_ADDRESS")
-CHAIN_ID = int(os.getenv("CHAIN_ID"))
+timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 ERC20_ABI = [
     {
@@ -38,19 +39,19 @@ ERC20_ABI = [
 
 def create_agent(name):
     blockchain_utils = BlockchainUtils(
-        WEB3_PROVIDER, PRIVATE_KEY, SOURCE_ADDRESS, TARGET_ADDRESS, CONTRACT_ADDRESS, ERC20_ABI, CHAIN_ID
+        WEB3_PROVIDER, PRIVATE_KEY, SOURCE_ADDRESS, TARGET_ADDRESS, CONTRACT_ADDRESS, ERC20_ABI
     )
     agent = AutonomousAgent(name, blockchain_utils)
 
     def hello_handler(content):
-        print(f"{agent.name}: Received 'hello' message: {content}")
+        print(f"[{timestamp}] {agent.name}: Received 'hello' message: {content}")
 
     def crypto_handler(content):
-        print(f"{agent.name}: Received 'crypto' message: {content}")
+        print(f"[{timestamp}] {agent.name}: Received 'crypto' message: {content}")
         if agent.get_balance() >= 1:
             agent.transfer_token(1)
         else:
-            print(f"{agent.name}: Not enough balance to process crypto message.")
+            print(f"[{timestamp}]{agent.name}: Not enough balance to process crypto message.")
 
     def generate_random_message():
         words = ["hello", "world", "crypto", "universe", "sky"]
@@ -69,8 +70,7 @@ def run_agent(agent, recipient, message_behavior):
             message_behavior(agent, recipient)
             while not agent.outbox.empty():
                 message = agent.outbox.get()
-                timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-                print(f"[{timestamp}] {agent.name} emitted message: {message}")
+                #print(f"[{timestamp}] {agent.name} emitted message: {message}")
             time.sleep(1)
     except KeyboardInterrupt:
         print(f"Shutting down {agent.name}...")
@@ -82,9 +82,11 @@ if __name__ == "__main__":
 
     def agent1_behavior(agent, recipient):
         agent.send_message(recipient, "hello", "Hello from Agent1")
+        time.sleep(2)  # Every 2 seconds
 
     def agent2_behavior(agent, recipient):
         agent.send_message(recipient, "crypto", "Agent2 needs tokens!")
+        time.sleep(10)  # Every 10 seconds
 
     # Create threads to run agent behaviors
     thread1 = threading.Thread(target=run_agent, args=(agent1, agent2, agent1_behavior))

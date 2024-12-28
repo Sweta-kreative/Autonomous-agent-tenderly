@@ -1,14 +1,7 @@
 import os
 import unittest
 from unittest.mock import MagicMock
-from autonomous_agent import AutonomousAgent, ERC20_ABI
-
-WEB3_PROVIDER = os.getenv("WEB3_PROVIDER")
-PRIVATE_KEY = os.getenv("PRIVATE_KEY")
-SOURCE_ADDRESS = os.getenv("SOURCE_ADDRESS")
-TARGET_ADDRESS = os.getenv("TARGET_ADDRESS")
-CONTRACT_ADDRESS = os.getenv("CONTRACT_ADDRESS")
-CHAIN_ID = int(os.getenv("CHAIN_ID"))
+from src.agent import AutonomousAgent
 
 class TestAutonomousAgent(unittest.TestCase):
     def test_get_balance(self):

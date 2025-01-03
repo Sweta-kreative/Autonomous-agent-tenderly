@@ -65,7 +65,7 @@ def create_agent(name):
             if current_time - crypto_last_time["time"] >= crypto_interval:
                 crypto_last_time["time"] = current_time
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                # print(f"[{timestamp}] {agent.name}: Received 'crypto' message: {content}")
+                #print(f"[{timestamp}] {agent.name}: Received 'crypto' message: {content}")
                 if agent.get_balance() >= 1:
                     agent.transfer_token(1)
                 else:
@@ -88,12 +88,21 @@ def create_agent(name):
 def run_agent(agent, recipient, message_behavior):
     try:
         while agent.running:
+            # Execute registered behaviors
+            for condition, behavior in agent.behaviors:
+                if condition():
+                    behavior()
+            
+            # Send specific messages based on the provided behavior
             message_behavior(agent, recipient)
+
+            # Process outbox messages
             while not agent.outbox.empty():
                 message = agent.outbox.get()
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                # print(f"[{timestamp}] {agent.name} emitted message: {message}")
-            time.sleep(1)
+                print(f"[{timestamp}] {agent.name} emitted message: {message}")
+
+            time.sleep(1)  # Sleep to control loop frequency
     except KeyboardInterrupt:
         print(f"Shutting down {agent.name}...")
         agent.stop()

@@ -65,16 +65,23 @@ def create_agent(name):
             if current_time - crypto_last_time["time"] >= crypto_interval:
                 crypto_last_time["time"] = current_time
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                #print(f"[{timestamp}] {agent.name}: Received 'crypto' message: {content}")
+                print(f"[{timestamp}] {agent.name}: Received 'crypto' message: {content}")
                 if agent.get_balance() >= 1:
                     agent.transfer_token(1)
                 else:
                     print(f"[{timestamp}] {agent.name}: Not enough balance to process crypto message.")
 
     def generate_random_message():
-        words = ["hello", "world", "crypto", "universe", "sky"]
-        msg = f"{random.choice(words)} {random.choice(words)}"
-        agent.emit_message("random", msg)
+        current_time = time.time()
+        with hello_last_called:  # Ensure thread safety for timing checks
+            if current_time - hello_last_time["time"] >= hello_interval:
+                hello_last_time["time"] = current_time
+                words = ["hello", "sun", "world", "space", "moon", "crypto", "sky", "ocean", "universe", "human"]
+                msg = f"{random.choice(words)} {random.choice(words)}"
+                agent.emit_message("random", msg)
+                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                # print(f"[{timestamp}] {agent.name} emitted message: {msg}")
+    
 
     # Register message handlers
     agent.register_message_handler("hello", hello_handler)
@@ -82,6 +89,7 @@ def create_agent(name):
 
     # Register behaviors
     agent.register_behavior(lambda: True, generate_random_message)
+    
 
     return agent
 
@@ -92,7 +100,7 @@ def run_agent(agent, recipient, message_behavior):
             for condition, behavior in agent.behaviors:
                 if condition():
                     behavior()
-            
+
             # Send specific messages based on the provided behavior
             message_behavior(agent, recipient)
 
@@ -102,7 +110,7 @@ def run_agent(agent, recipient, message_behavior):
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 print(f"[{timestamp}] {agent.name} emitted message: {message}")
 
-            time.sleep(1)  # Sleep to control loop frequency
+            time.sleep(0.1)  # Short sleep for responsiveness without busy looping
     except KeyboardInterrupt:
         print(f"Shutting down {agent.name}...")
         agent.stop()
@@ -120,6 +128,7 @@ if __name__ == "__main__":
     # Create threads to run agent behaviors
     thread1 = threading.Thread(target=run_agent, args=(agent1, agent2, agent1_behavior))
     thread2 = threading.Thread(target=run_agent, args=(agent2, agent1, agent2_behavior))
+
 
     thread1.start()
     thread2.start()

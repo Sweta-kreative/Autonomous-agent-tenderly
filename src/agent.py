@@ -37,7 +37,7 @@ class AutonomousAgent:
                 message_type, content = self.inbox.get(timeout=0.5)
                 if message_type in self.message_handlers:
                     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    print(f"[{timestamp}] {self.name}: Handling message '{message_type}' with content: {content}")
+                    # print(f"[{timestamp}] {self.name}: Handling message '{message_type}' with content: {content}")
                     self.message_handlers[message_type](content)
             except queue.Empty:
                 pass
@@ -63,4 +63,4 @@ class AutonomousAgent:
     def transfer_token(self, amount):
         tx_hash = self.blockchain_utils.transfer_token(amount)
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # print(f"[{timestamp}] {self.name}: Transaction sent with hash {tx_hash}")
+        print(f"[{timestamp}] {self.name}: Transaction sent with hash {tx_hash}")

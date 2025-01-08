@@ -5,6 +5,9 @@ tests/__pycache__/
 *.pyc
 *.pyo
 
+#test code
+test.py
+
 # Ignore virtual environments
 venv/
 .env

@@ -19,14 +19,14 @@ This project implements autonomous agents that communicate and interact using th
 - A **Tenderly fork URL**
 - Testing Agent fork account with **ERC-20 tokens**
 - Token should be sent to the target address and imported into **MetaMask** for testing.
-- Explorer URL for transactions: [Tenderly Explorer](https://virtual.sepolia.rpc.tenderly.co/1f087125-473a-49f5-b9ae-39f36aeb2bc4)
-- Token contract creation URL: [Tenderly Contract](https://dashboard.tenderly.co/Sweta/project/testnet/085057a5-63c0-43de-b4b2-d41ec3cafd91/tx/sepolia/0xd1b664a8878f6b81fe0317c10335c38d066f5789a9dc8d5b1d1d68b09dd11724)
+- Explorer URL for transactions: [Tenderly Explorer](https://virtual.sepolia.rpc.tenderly.co/40f6cc2d-0ded-4881-bc47-c6a31e57a9ce)
+- Token contract creation URL: [Tenderly Contract](https://dashboard.tenderly.co/explorer/vnet/40f6cc2d-0ded-4881-bc47-c6a31e57a9ce/tx/0x5883fa16870c3bad7fff42e2d046573927488b5f4e7d73311924299a2d20e0e0)
 
 ---
 
 ## MetaMask Setup
 - **Network Name**: Tenderly (AgentTestnet)  
-- **RPC URL**: `https://virtual.sepolia.rpc.tenderly.co/26e92e61-3f15-4e48-9f07-071a0570f165`  
+- **RPC URL**: `https://virtual.sepolia.rpc.tenderly.co/eac04090-7ac1-4c20-b640-94504f53eeb2`  
 - **Currency**: ETH  
 
 ---
